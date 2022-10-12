@@ -46,8 +46,6 @@ public class Calculator {
      *                             error is.
      */
     public static int compute(String[] tokens) throws CalculatorException {
-        final String a = "*";
-        final String b = "/";
         // Condition on the number of tokens
         switch (tokens.length) {
             case 0:
@@ -58,23 +56,32 @@ public class Calculator {
                 // Only case: quit
                 // TODO: complete the cases
                 if (tokens[0].toLowerCase() == "quit") {
-                    throw new QuitException("Illegal Argument");
+                    System.exit(0);
                 }
+                throw new QuitException("Quitting");
             case 2:
                 // Only case: unary operator
                 // TODO: complete the cases
-                if (tokens[0].equals("-")) {
+                if (tokens[0] == "-") {
                     return 0 - Integer.parseInt(tokens[1]);
                 }
             case 3:
                 // Binary operator
                 // TODO: complete the cases
-                final int fNum = Integer.parseInt(tokens[0]);
-                final String operator = tokens[1];
-                final int sNum = Integer.parseInt(tokens[2]);
-                int result = fNum * sNum;
-                int result2 = fNum / sNum;
-                System.out.println(result2);
+                int div = Integer.parseInt(tokens[0]) / Integer.parseInt(tokens[2]);
+                int mult = Integer.parseInt(tokens[0]) * Integer.parseInt(tokens[2]);
+                int add = Integer.parseInt(tokens[0]) + Integer.parseInt(tokens[2]);
+                if (tokens[1] == "/") {
+                    return div;
+                }
+                if (tokens[1] == "*") {
+                    return mult;
+                }
+                if (tokens[1] == "+") {
+                    return add;
+                } else {
+                    throw new IllegalInputException("Illegal Operator");
+                }
 
             default:
                 // 4 or more tokens
@@ -107,6 +114,7 @@ public class Calculator {
      * 
      * @param input A String possibly containing a mathematical expression
      * @return true if the String is equal to "quit"; false otherwise
+     * @throws DivideByZeroException
      */
     public static boolean parseAndCompute(String input) {
         // Pull out the tokens
@@ -117,10 +125,10 @@ public class Calculator {
             if (tokens[0].toLowerCase() == "quit") {
                 return true;
             } else {
-                return false;
+                int result = compute(tokens);
+                System.out.println("The result is " + result);
             }
-            compute(tokens);
-            // System.out.println("The result is ");
+            return false;
 
         } catch (QuitException e) {
             // TODO: complete implementation.
@@ -133,7 +141,7 @@ public class Calculator {
         } catch (CalculatorException e) {
             // This catches the remaining CalculatorException case: DivideByZeroException
             // TODO: complete implementation.
-            System.out.println("Tried to divide by zero");
+            System.out.println("DivideByZeroException: ");
 
         } finally {
             System.out.println("Input was: " + input);
