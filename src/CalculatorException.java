@@ -9,5 +9,7 @@
  * to determine the issue.
  */
 public class CalculatorException extends Exception {
-
+    public CalculatorException(String message) throws CalculatorException {
+        super(message);
+    }
 }

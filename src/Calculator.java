@@ -68,7 +68,7 @@ public class Calculator {
                 // TODO: complete the cases
                 if (tokens[0].equals("-")) {
                     return 0 - Integer.parseInt(tokens[1]);
-                }else if(tokens[0].equals("+"){
+                } else if (tokens[0].equals("+")) {
                     return 0;
                 }
             case 3:
@@ -80,7 +80,7 @@ public class Calculator {
                     return Integer.parseInt(tokens[0]) + Integer.parseInt(tokens[2]);
                 } else if (tokens[1].equals(operator)) {
                     return Integer.parseInt(tokens[0]) / Integer.parseInt(tokens[2]);
-                }else {
+                } else {
                     throw new IllegalInputException("Illegal Operator");
                 }
             default:
@@ -143,7 +143,11 @@ public class Calculator {
             System.out.println("Tried to divide by zero");
 
         } finally {
-            System.out.println("Input was: " + input);
+            if (tokens[0].equals("+")) {
+                System.out.println("Input was: " + "+" + input);
+            } else {
+                System.out.println("Input was: " + input);
+            }
             System.out.println("------------------");
         }
 
