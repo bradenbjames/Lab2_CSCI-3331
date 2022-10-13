@@ -46,6 +46,9 @@ public class Calculator {
      *                             error is.
      */
     public static int compute(String[] tokens) throws CalculatorException {
+        final String operator = "/";
+        final String operator1 = "*";
+        final String operator2 = "+";
         // Condition on the number of tokens
         switch (tokens.length) {
             case 0:
@@ -56,33 +59,28 @@ public class Calculator {
                 // Only case: quit
                 // TODO: complete the cases
                 if (tokens[0].toLowerCase() == "quit") {
-                    System.exit(0);
+                    throw new QuitException("Quitting");
+                } else {
+                    throw new IllegalInputException("Illegal Input");
                 }
-                throw new QuitException("Quitting");
             case 2:
                 // Only case: unary operator
                 // TODO: complete the cases
-                if (tokens[0] == "-") {
+                if (tokens[0].equals("-")) {
                     return 0 - Integer.parseInt(tokens[1]);
+                }else if(tokens[0].equals("+"){
+                    return 0;
                 }
             case 3:
                 // Binary operator
                 // TODO: complete the cases
-                int div = Integer.parseInt(tokens[0]) / Integer.parseInt(tokens[2]);
-                int mult = Integer.parseInt(tokens[0]) * Integer.parseInt(tokens[2]);
-                int add = Integer.parseInt(tokens[0]) + Integer.parseInt(tokens[2]);
-                if (tokens[1] == "/") {
-                    return div;
+                if (tokens[1].equals(operator1)) {
+                    return Integer.parseInt(tokens[0]) * Integer.parseInt(tokens[2]);
+                } else if (tokens[1].equals(operator2)) {
+                    return Integer.parseInt(tokens[0]) + Integer.parseInt(tokens[2]);
+                } else if (tokens[1].equals(operator)) {
+                    return Integer.parseInt(tokens[0]) / Integer.parseInt(tokens[2]);
                 }
-                if (tokens[1] == "*") {
-                    return mult;
-                }
-                if (tokens[1] == "+") {
-                    return add;
-                } else {
-                    throw new IllegalInputException("Illegal Operator");
-                }
-
             default:
                 // 4 or more tokens
                 // TODO: complete the cases
@@ -125,10 +123,9 @@ public class Calculator {
             if (tokens[0].toLowerCase() == "quit") {
                 return true;
             } else {
-                int result = compute(tokens);
-                System.out.println("The result is " + result);
+                System.out.println("The result is " + compute(tokens));
+                return false;
             }
-            return false;
 
         } catch (QuitException e) {
             // TODO: complete implementation.
@@ -141,10 +138,11 @@ public class Calculator {
         } catch (CalculatorException e) {
             // This catches the remaining CalculatorException case: DivideByZeroException
             // TODO: complete implementation.
-            System.out.println("DivideByZeroException: ");
+            System.out.println("Tried to divide by zero");
 
         } finally {
             System.out.println("Input was: " + input);
+            System.out.println("------------------");
         }
 
         // TODO: complete implementation.
