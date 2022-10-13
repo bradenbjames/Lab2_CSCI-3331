@@ -80,6 +80,8 @@ public class Calculator {
                     return Integer.parseInt(tokens[0]) + Integer.parseInt(tokens[2]);
                 } else if (tokens[1].equals(operator)) {
                     return Integer.parseInt(tokens[0]) / Integer.parseInt(tokens[2]);
+                }else {
+                    throw new IllegalInputException("Illegal Operator");
                 }
             default:
                 // 4 or more tokens
