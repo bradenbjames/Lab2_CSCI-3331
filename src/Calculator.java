@@ -46,6 +46,7 @@ public class Calculator {
      *                             error is.
      */
     public static int compute(String[] tokens) throws CalculatorException {
+        boolean flag;
         // Condition on the number of tokens
         switch (tokens.length) {
             case 0:
@@ -66,7 +67,8 @@ public class Calculator {
                 if (tokens[0].equals("-")) {
                     return 0 - Integer.parseInt(tokens[1]);
                 } else if (tokens[0].equals("+")) {
-                    return 0;
+                    flag = true;
+                    return Integer.parseInt(tokens[1]);
                 }
             case 3:
                 // Binary operator
@@ -76,22 +78,25 @@ public class Calculator {
                     if (isNumeric(tokens[0]) && isNumeric(tokens[2])) {
                         return Integer.parseInt(tokens[0]) * Integer.parseInt(tokens[2]);
                     } else {
-                        throw new IllegalInputException("Illegal Input");
+                        throw new IllegalInputException("Illegal Arguement");
                     }
                 }
                 if (tokens[1].equals("+")) {
                     if (isNumeric(tokens[0]) && isNumeric(tokens[2])) {
                         return Integer.parseInt(tokens[0]) + Integer.parseInt(tokens[2]);
                     } else {
-                        throw new IllegalInputException("Illegal Input");
+                        throw new IllegalInputException("Illegal Arguement");
                     }
                 }
                 if (tokens[1].equals("/")) {
                     if (isNumeric(tokens[0]) && isNumeric(tokens[2])) {
                         return Integer.parseInt(tokens[0]) / Integer.parseInt(tokens[2]);
                     } else {
-                        throw new IllegalInputException("Illegal Input");
+                        throw new IllegalInputException("Illegal Arguement");
                     }
+                }
+                if (!tokens[1].equals("/") && !tokens[1].equals("*") && !tokens[1].equals("+")) {
+                    throw new IllegalInputException("Illegal Operator");
                 }
             default:
                 // 4 or more tokens
@@ -129,15 +134,18 @@ public class Calculator {
     public static boolean parseAndCompute(String input) {
         // Pull out the tokens
         String[] tokens = input.split(" ");
-
         try {
             // TODO: complete implementation.
             // check for quit
             if (tokens[0].toLowerCase() == "quit") {
                 return true;
             } else {
-                // compute the tokens
-                System.out.println("The result is " + compute(tokens));
+                // compute the tokens, print
+                if (compute(tokens) > 0 && tokens[0].equals("+")) {
+                    System.out.println("The result is: +" + compute(tokens));
+                } else {
+                    System.out.println("The result is: " + compute(tokens));
+                }
                 return false;
             }
 
@@ -156,7 +164,7 @@ public class Calculator {
 
         } finally {
             if (tokens[0].equals("+")) {
-                System.out.println("Input was: " + "+" + input);
+                System.out.println("Input was: " + input);
             } else {
                 System.out.println("Input was: " + input);
             }
@@ -169,8 +177,9 @@ public class Calculator {
         return false;
     }
 
-    // helper method for case 3:
-    public static boolean isNumeric(String input) {
+    // helper method for case 3 : Determines if the string input
+    // can be parsed or not
+    private static boolean isNumeric(String input) {
         if (input == null) {
             return false;
         }
