@@ -46,9 +46,6 @@ public class Calculator {
      *                             error is.
      */
     public static int compute(String[] tokens) throws CalculatorException {
-        final String operator = "/";
-        final String operator1 = "*";
-        final String operator2 = "+";
         // Condition on the number of tokens
         switch (tokens.length) {
             case 0:
@@ -58,7 +55,7 @@ public class Calculator {
             case 1:
                 // Only case: quit
                 // TODO: complete the cases
-                if (tokens[0].toLowerCase() == "quit") {
+                if (tokens[0].equalsIgnoreCase("quit")) {
                     throw new QuitException("Quitting");
                 } else {
                     throw new IllegalInputException("Illegal Input");
@@ -74,14 +71,27 @@ public class Calculator {
             case 3:
                 // Binary operator
                 // TODO: complete the cases
-                if (tokens[1].equals(operator1)) {
-                    return Integer.parseInt(tokens[0]) * Integer.parseInt(tokens[2]);
-                } else if (tokens[1].equals(operator2)) {
-                    return Integer.parseInt(tokens[0]) + Integer.parseInt(tokens[2]);
-                } else if (tokens[1].equals(operator)) {
-                    return Integer.parseInt(tokens[0]) / Integer.parseInt(tokens[2]);
-                } else {
-                    throw new IllegalInputException("Illegal Operator");
+                // check if the operator is "*"
+                if (tokens[1].equals("*")) {
+                    if (isNumeric(tokens[0]) && isNumeric(tokens[2])) {
+                        return Integer.parseInt(tokens[0]) * Integer.parseInt(tokens[2]);
+                    } else {
+                        throw new IllegalInputException("Illegal Input");
+                    }
+                }
+                if (tokens[1].equals("+")) {
+                    if (isNumeric(tokens[0]) && isNumeric(tokens[2])) {
+                        return Integer.parseInt(tokens[0]) + Integer.parseInt(tokens[2]);
+                    } else {
+                        throw new IllegalInputException("Illegal Input");
+                    }
+                }
+                if (tokens[1].equals("/")) {
+                    if (isNumeric(tokens[0]) && isNumeric(tokens[2])) {
+                        return Integer.parseInt(tokens[0]) / Integer.parseInt(tokens[2]);
+                    } else {
+                        throw new IllegalInputException("Illegal Input");
+                    }
                 }
             default:
                 // 4 or more tokens
@@ -122,9 +132,11 @@ public class Calculator {
 
         try {
             // TODO: complete implementation.
+            // check for quit
             if (tokens[0].toLowerCase() == "quit") {
                 return true;
             } else {
+                // compute the tokens
                 System.out.println("The result is " + compute(tokens));
                 return false;
             }
@@ -155,5 +167,18 @@ public class Calculator {
 
         // Quit has not been specified
         return false;
+    }
+
+    // helper method for case 3:
+    public static boolean isNumeric(String input) {
+        if (input == null) {
+            return false;
+        }
+        try {
+            int i = Integer.parseInt(input);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
     }
 }
