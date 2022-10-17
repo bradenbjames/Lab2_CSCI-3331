@@ -1,4 +1,3 @@
-
 /**
  * The Calculator class provides functionality for parsing input strings
  * that contain simple expressions and for computing the result of the
@@ -46,7 +45,6 @@ public class Calculator {
      *                             error is.
      */
     public static int compute(String[] tokens) throws CalculatorException {
-        boolean flag;
         // Condition on the number of tokens
         switch (tokens.length) {
             case 0:
@@ -67,7 +65,6 @@ public class Calculator {
                 if (tokens[0].equals("-")) {
                     return 0 - Integer.parseInt(tokens[1]);
                 } else if (tokens[0].equals("+")) {
-                    flag = true;
                     return Integer.parseInt(tokens[1]);
                 }
             case 3:
@@ -89,6 +86,9 @@ public class Calculator {
                     }
                 }
                 if (tokens[1].equals("/")) {
+                    if (tokens[2].equals("0")) {
+                        throw new DivideByZeroException("Tried to divide by zero");
+                    }
                     if (isNumeric(tokens[0]) && isNumeric(tokens[2])) {
                         return Integer.parseInt(tokens[0]) / Integer.parseInt(tokens[2]);
                     } else {
@@ -98,6 +98,7 @@ public class Calculator {
                 if (!tokens[1].equals("/") && !tokens[1].equals("*") && !tokens[1].equals("+")) {
                     throw new IllegalInputException("Illegal Operator");
                 }
+
             default:
                 // 4 or more tokens
                 // TODO: complete the cases
@@ -140,7 +141,7 @@ public class Calculator {
             if (tokens[0].toLowerCase() == "quit") {
                 return true;
             } else {
-                // compute the tokens, print
+                // compute tokens, conactenate and print
                 if (compute(tokens) > 0 && tokens[0].equals("+")) {
                     System.out.println("The result is: +" + compute(tokens));
                 } else {
@@ -185,7 +186,7 @@ public class Calculator {
         }
         try {
             int i = Integer.parseInt(input);
-        } catch (NumberFormatException nfe) {
+        } catch (NumberFormatException e) {
             return false;
         }
         return true;
